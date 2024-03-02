@@ -25,9 +25,9 @@ namespace StoreAPI.Controllers
 
         [HttpGet]
         [Route("api/cosmetics/getById")]
-        public ActionResult<CosmeticsDto> GetCosmeticsIndex(int id)
+        public ActionResult<CosmeticsDto> GetCosmeticsIndex(int cosmeticsId)
         {
-            var cosmeticsToReturn = CosmeticsDataStore.Current.FirstOrDefault(c => c.Id == id);
+            var cosmeticsToReturn = CosmeticsDataStore.Current.FirstOrDefault(c => c.Id == cosmeticsId);
 
             if (cosmeticsToReturn == null)
             {
@@ -53,14 +53,15 @@ namespace StoreAPI.Controllers
 
         [HttpPost]
         [Route("api/cosmetics/post")]
-        public ActionResult<CosmeticsDto> CreateCosmetics(CosmeticsDto cosmeticsDto)
+        public ActionResult<CosmeticsDto> CreateCosmetics(CosmeticsForCreationDto cosmeticsDto)
         {
-            var cosmeticsId = CosmeticsDataStore.Current.Max(c => c.Id);
 
             if (cosmeticsDto == null)
             {
                 return BadRequest();
             }
+
+            var cosmeticsId = CosmeticsDataStore.Current.Max(c => c.Id);
 
             var cosmeticsToAdd = new CosmeticsDto()
             {
@@ -79,7 +80,7 @@ namespace StoreAPI.Controllers
 
         [HttpPut]
         [Route("api/cosmetics/put")]
-        public ActionResult<CosmeticsDto> UpdateCosmetics(int cosmeticsId, CosmeticsDto cosmeticsDto)
+        public ActionResult<CosmeticsDto> UpdateCosmetics(int cosmeticsId, CosmeticsForUpdateDto cosmeticsDto)
         {
             var cosmetics = CosmeticsDataStore.Current.FirstOrDefault(c => c.Id == cosmeticsId);
             if (cosmetics == null)
@@ -92,34 +93,35 @@ namespace StoreAPI.Controllers
 
             return NoContent();
         }
-        //[HttpPatch]
-        //[Route("api/cosmetics/patch")]
-        //public ActionResult<CosmeticsDto> PartiallyUpdateCosmetics(int cosmeticsId, [FromBody] JsonPatchDocument<CosmeticsDto> patchDocument)
-        //{
-        //    var cosmetics = CosmeticsDataStore.Current.FirstOrDefault(c => c.Id == cosmeticsId);
-        //    if (cosmetics == null)
-        //    {
-        //        return NotFound();
-        //    }
 
-        //    var cosmeticsToPatch = new CosmeticsDto()
-        //    {
-        //        Name = cosmetics.Name,
-        //        Description = cosmetics.Description
-        //    };
+        [HttpPatch]
+        [Route("api/cosmetics/patch")]
+        public ActionResult<CosmeticsDto> PartiallyUpdateCosmetics(int cosmeticsId, JsonPatchDocument<CosmeticsForUpdateDto> patchDocument)
+        {
+            var cosmetics = CosmeticsDataStore.Current.FirstOrDefault(c => c.Id == cosmeticsId);
+            if (cosmetics == null)
+            {
+                return NotFound();
+            }
 
-        //    patchDocument.ApplyTo(cosmeticsToPatch, ModelState);
+            var cosmeticsToPatch = new CosmeticsForUpdateDto()
+            {
+                Name = cosmetics.Name,
+                Description = cosmetics.Description
+            };
 
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
+            patchDocument.ApplyTo(cosmeticsToPatch, ModelState);
 
-        //    cosmetics.Name = cosmeticsToPatch.Name;
-        //    cosmetics.Description = cosmeticsToPatch.Description;
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        //    return NoContent();
-        //}
+            cosmetics.Name = cosmeticsToPatch.Name;
+            cosmetics.Description = cosmeticsToPatch.Description;
+
+            return NoContent();
+        }
 
         [HttpDelete]
         [Route("api/cosmetics/delete")]
