@@ -67,9 +67,9 @@ namespace StoreAPI.Controllers
                 Id = ++shoesId,
                 Name = shoesDto.Name,
                 ReleasedDate = shoesDto.ReleasedDate,
-                Price = shoesDto.Price,
                 Brand = shoesDto.Brand,
-                Size = shoesDto.Size,
+                //Price = shoesDto.Price,
+                //Size = shoesDto.Size,
             };
 
             ShoesDataStore.Current.Add(shoesToAdd);
@@ -90,9 +90,9 @@ namespace StoreAPI.Controllers
 
             shoes.Name = shoesDto.Name;
             shoes.ReleasedDate = shoesDto.ReleasedDate;
-            shoes.Price = shoesDto.Price;
             shoes.Brand = shoesDto.Brand;
-            shoes.Size = shoesDto.Size;
+            //shoes.Price = shoesDto.Price;
+            //shoes.Size = shoesDto.Size;
 
             return NoContent();
         }
@@ -112,9 +112,9 @@ namespace StoreAPI.Controllers
 
                 Name = shoes.Name,
                 ReleasedDate = shoes.ReleasedDate,
-                Price = shoes.Price,
                 Brand = shoes.Brand,
-                Size = shoes.Size,
+              //  Price = shoes.Price,
+                //Size = shoes.Size,
             };
 
             patchDocument.ApplyTo(shoesToPatch, ModelState);
@@ -126,9 +126,9 @@ namespace StoreAPI.Controllers
 
             shoes.Name = shoesToPatch.Name;
             shoes.ReleasedDate = shoesToPatch.ReleasedDate;
-            shoes.Price = shoesToPatch.Price;
             shoes.Brand = shoesToPatch.Brand;
-            shoes.Size = shoesToPatch.Size;
+            //shoes.Price = shoesToPatch.Price;
+            //shoes.Size = shoesToPatch.Size;
 
             return NoContent();
         }

@@ -8,10 +8,18 @@
 
         public string ReleasedDate { get; set; } = string.Empty;
 
-        public int Price { get; set; }
-
         public string Brand { get; set; } = string.Empty;
 
-        public float Size { get; set; }
+        public int NumberOfPointsOfInterest
+        {
+            get
+            {
+                return ShoesChild.Count;
+            }
+        }
+
+        //to include collection of points of interest
+        public ICollection<ShoesChildDto> ShoesChild { get; set; } = new List<ShoesChildDto>();
+        //always assign empty list to avoid null issues
     }
 }
